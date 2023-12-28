@@ -29,8 +29,13 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Deploy on Yandex Cloud
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Create Docker file. Take from [here](https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile)
+2. Create Container Registry in YC. Copy ID.
+3. Build image with command `docker build .  -t cr.yandex/<Container Registry ID>/nextjs`
+4. Get OAuth token in YC. [Instruction](https://cloud.yandex.ru/ru/docs/container-registry/operations/authentication)
+5. Since the build is ready, lodin with command `docker login --username oauth --password <OAuth token> cr.yandex`
+6. And push to Container Registry `docker push cr.yandex/<Container Registry ID>/nextjs`
+7. Go to Serverless Containers and create new one. The image with name `<Container Registry ID>/nextjs` has to be available.
+8. Run with command `docker run -p 3000:3000 cr.yandex/<Container Registry ID>/nextjs`.
